@@ -96,8 +96,12 @@ class AEAT182 {
     if ($onlyErrors == true) {
       $output = array_filter($output);
       foreach ($output as $key => $error) {
-        $warnings[$key] = $error[0];
-        $errors[$key] = $error[1];
+        if(!empty($error[0])){
+              $warnings[$key] = $error[0];
+        }
+        if(!empty($error[1])){
+            $errors[$key] = $error[1];
+        }
       }
       return array ($warnings, $errors);
     }
