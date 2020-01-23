@@ -83,7 +83,7 @@ class AEAT182RDeclared extends AEAT182RBase {
 
     $warnings = array();
     $errors = array();
-    $output='';
+    $output = '';
 
     foreach ($this->attributes as $attribute => $class) {
       if ( mb_strlen($class['value']) > $class['length'] ) {
@@ -92,7 +92,7 @@ class AEAT182RDeclared extends AEAT182RBase {
         }
         else {
           $warnings[] = 'El campo ' . $class['value'] . ' solo pueden tener ' . $class['length'] . ' carácteres, NO hace falta cambiarlo en el documento se cortaria.';
-          $class['value'] = mb_substr( $class['value'], 0,$class['length'] );
+          $class['value'] = mb_substr( $class['value'], 0, $class['length'] );
         }
       }
       if ($class['dataType'] == 'NUM'){
