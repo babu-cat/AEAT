@@ -113,15 +113,15 @@ class AEAT182 {
    */
   public function saveFile($download = true) {
     $output = '';
-    $output = $this->getOutput();
+    $output = utf8_decode($this->getOutput());
 
     if ($download == true) {
-      header("Cache-Control: no-cache, must-revalidate");
-      header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+      header('Cache-Control: no-cache, must-revalidate');
+      header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
       header('Pragma: private');
-      header("Content-Disposition: attachment; filename=182.txt");
-      header("Content-Length: " . strlen($output));
-      header("Content-Type: application/octet-stream;");
+      header('Content-Disposition: attachment; filename=182.182');
+      header('Content-Length: ' . strlen($output));
+      header('Content-Type: application/octet-stream; charset=iso-8859-1');
       echo $output;
       exit;
     }
