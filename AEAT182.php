@@ -85,7 +85,7 @@ class AEAT182 {
 
     $output['declarant'] = $this->declarant->getOutput($onlyErrors);
 
-    foreach($this->declareds as $declared) {
+    foreach ($this->declareds as $declared) {
       if( !empty($declared->externalIdValue) ) {
         $output[$declared->externalIdValue] = $declared->getOutput($onlyErrors);
       }
@@ -96,11 +96,11 @@ class AEAT182 {
     if ($onlyErrors == true) {
       $output = array_filter($output);
       foreach ($output as $key => $error) {
-        if(!empty($error[0])){
-              $warnings[$key] = $error[0];
+        if ( !empty($error[0]) ) {
+          $warnings[$key] = $error[0];
         }
-        if(!empty($error[1])){
-            $errors[$key] = $error[1];
+        if ( !empty($error[1]) ) {
+          $errors[$key] = $error[1];
         }
       }
       return array ($warnings, $errors);
@@ -147,5 +147,5 @@ class AEAT182 {
       return $output;
     }
   }
-  
+
 }
