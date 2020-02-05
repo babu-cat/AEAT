@@ -6,6 +6,8 @@ require_once 'AEAT182RDeclared.php';
 class AEAT182 {
 
   const AEAT182_EOL = "\r\n";
+  const NATURAL_PERSON = 1;
+  const SOCIETIES = 2;
 
   var $declarant;
   var $declareds = array();
@@ -146,6 +148,60 @@ class AEAT182 {
     if ( !empty($output) ) {
       return $output;
     }
+  }
+
+  /**
+   * 
+   * @param int $contactType {NATURAL_PERSON, SOCIETIES}
+   * @param decimal $amountThisYear
+   * @param decimal $amountLastYear
+   * @param decimal $amountTwoYearBefore
+   * 
+   * @return array[percentage,recurrence]
+   */
+  static public function getDeductionPercentAndDonationsRecurrence($contactType, $amountThisYear, $amountLastYear, $amountTwoYearBefore) {
+
+    // Ley 49/2002, de 23 de diciembre, de régimen fiscal de las entidades sin fines lucrativos y de los incentivos fiscales al mecenazgo.
+
+    // [Artículo 19. Deducción de la cuota del Impuesto sobre la Renta de las Personas Físicas](https://www.boe.es/buscar/act.php?id=BOE-A-2002-25039&p=20191228&tn=1#a19)
+    // [Artículo 20. Deducción de la cuota del Impuesto sobre Sociedades](https://www.boe.es/buscar/act.php?id=BOE-A-2002-25039&p=20191228&tn=1#a20)
+
+    $donationsRecurrence = 0;
+
+    if ( ($amountLastYear > 0) &&
+         ($amountTwoYearBefore > 0) &&
+         ($amountThisYear >= $amountLastYear) &&
+         ($amountLastYear >= $amountTwoYearBefore) ) {
+      $donationsRecurrence = 1;
+    }
+    else {
+      $donationsRecurrence = 2;
+    }
+
+    if ($contactType == self::NATURAL_PERSON) {
+      if ($amountThisYear <= 150) {
+        $deduction_amount = '75';
+      }
+      elseif ($amountThisYear > 150 &&  $donationsRecurrence == 1) {
+        $deduction_amount = '35';
+      }
+      else {
+        $deduction_amount = '30';
+      }
+    }
+    elseif ($contactType == self::SOCIETIES) {
+      if ($donationsRecurrence == 1) {
+        $deduction_amount = '40';
+      }
+      else {
+        $deduction_amount = '35';
+      }
+    }
+    else {
+      return array();
+    }
+
+    return array('percentage' => $deduction_amount , 'recurrence' => $donationsRecurrence);
   }
 
 }
