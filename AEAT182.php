@@ -165,9 +165,9 @@ class AEAT182 {
 
     // [Artículo 19. Deducción de la cuota del Impuesto sobre la Renta de las Personas Físicas](https://www.boe.es/buscar/act.php?id=BOE-A-2002-25039&p=20191228&tn=1#a19)
     // [Artículo 20. Deducción de la cuota del Impuesto sobre Sociedades](https://www.boe.es/buscar/act.php?id=BOE-A-2002-25039&p=20191228&tn=1#a20)
-
+    
     $donationsRecurrence = 0;
-
+    
     if ( ($amountLastYear > 0) &&
          ($amountTwoYearBefore > 0) &&
          ($amountThisYear >= $amountLastYear) &&
@@ -180,13 +180,13 @@ class AEAT182 {
 
     if ($contactType == self::NATURAL_PERSON) {
       if ($amountThisYear <= 150) {
-        $deduction_amount = '75';
+        $deduction_amount = '80';
       }
       elseif ($amountThisYear > 150 &&  $donationsRecurrence == 1) {
-        $deduction_amount = '35';
+        $deduction_amount = '40';
       }
       else {
-        $deduction_amount = '30';
+        $deduction_amount = '35';
       }
     }
     elseif ($contactType == self::SOCIETIES) {
@@ -200,7 +200,6 @@ class AEAT182 {
     else {
       return array();
     }
-
     return array('percentage' => $deduction_amount , 'recurrence' => $donationsRecurrence);
   }
 
