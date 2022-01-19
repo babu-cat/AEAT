@@ -9,6 +9,15 @@ class AEAT182 {
   const NATURAL_PERSON = 1;
   const SOCIETIES = 2;
 
+  // Autonomous Community Codes
+  const ACC_CATALONIA = '08';
+
+  // Province Codes
+  const PROVINCE_BARCELONA = '08';
+  const PROVINCE_GIRONA = '17';
+  const PROVINCE_LLEIDA = '25';
+  const PROVINCE_TARRAGONA = '43';
+
   var $declarant;
   var $declareds = array();
   var $exercise, $NIF_Declarant, $socialReason, $phone, $contactPerson;
@@ -151,12 +160,12 @@ class AEAT182 {
   }
 
   /**
-   * 
+   *
    * @param int $contactType {NATURAL_PERSON, SOCIETIES}
    * @param decimal $amountThisYear
    * @param decimal $amountLastYear
    * @param decimal $amountTwoYearBefore
-   * 
+   *
    * @return array[percentage,recurrence]
    */
   static public function getDeductionPercentAndDonationsRecurrence($contactType, $amountThisYear, $amountLastYear, $amountTwoYearBefore) {
@@ -165,9 +174,9 @@ class AEAT182 {
 
     // [Artículo 19. Deducción de la cuota del Impuesto sobre la Renta de las Personas Físicas](https://www.boe.es/buscar/act.php?id=BOE-A-2002-25039&p=20191228&tn=1#a19)
     // [Artículo 20. Deducción de la cuota del Impuesto sobre Sociedades](https://www.boe.es/buscar/act.php?id=BOE-A-2002-25039&p=20191228&tn=1#a20)
-    
+
     $donationsRecurrence = 0;
-    
+
     if ( ($amountLastYear > 0) &&
          ($amountTwoYearBefore > 0) &&
          ($amountThisYear >= $amountLastYear) &&
@@ -203,4 +212,24 @@ class AEAT182 {
     return array('percentage' => $deduction_amount , 'recurrence' => $donationsRecurrence);
   }
 
+  /**
+   *
+   * @param int $provinceCode
+   * @param int $autonomousCommunityCode
+   *
+   * @return boolean
+   */
+  static public function isAutonomousCommunityProvince($provinceCode, $autonomousCommunityCode) {
+    if ($autonomousCommunityCode == self::ACC_CATALONIA ) {
+      return in_array($provinceCode,[
+        self::PROVINCE_BARCELONA,
+        self::PROVINCE_GIRONA,
+        self::PROVINCE_LLEIDA,
+        self::PROVINCE_TARRAGONA
+      ]);
+    }
+    else {
+      return false;
+    }
+  }
 }
