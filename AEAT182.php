@@ -10,7 +10,7 @@ class AEAT182 {
   const SOCIETIES = 2;
 
   // Autonomous Community Codes
-  const ACC_CATALONIA = '08';
+  const ACC_CATALONIA = '09';
 
   // Province Codes
   const PROVINCE_BARCELONA = '08';
