@@ -9,6 +9,7 @@ La confección de ficheros válidos tanto para la presentación de declaraciones
 **Modelos disponibles:**
 
 - [Modelo 182. Declaración Informativa. Donativos, donaciones y aportaciones recibidas.](https://www.agenciatributaria.gob.es/AEAT.sede/procedimientoini/GI02.shtml)
+- [Modelo 993. Control de deducciones autonómicas](https://sede.agenciatributaria.gob.es/Sede/procedimientoini/GC22.shtml)
 
 ## Modelo 182
 

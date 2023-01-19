@@ -13,6 +13,7 @@ class AEAT182RDeclared extends AEAT182RBase {
    *
    * @param $exercise string
    * @param $NIFDeclarant string
+   * @param $declarantName string Necesario para generación del fichero 993
    * @param $NIFDeclared string
    * @param $NIFRepresentative string
    * @param $declaredName string
@@ -35,41 +36,42 @@ class AEAT182RDeclared extends AEAT182RBase {
    *
    */
   function __construct($params) {
-      parent::__construct(2, $params['exercise'], $params['NIFDeclarant']);
-      $this->externalIdValue = ( isset($params['externalId']) ) ? $params['externalId'] : '';
-      $NIFDeclaredValue = ( isset($params['NIFDeclared']) ) ? $params['NIFDeclared'] : '';
-      $NIFRepresentativeValue = ( isset($params['NIFRepresentative']) ) ? $params['NIFRepresentative'] : '';
-      $declaredNameValue = ( isset($params['declaredName']) ) ? $params['declaredName'] : '';
-      $provinceCodeValue = ( isset($params['provinceCode']) ) ? $params['provinceCode'] : '';
-      $keyValue = ( isset($params['key']) ) ? $params['key'] : '';
-      $deductionValue = ( isset($params['deduction']) ) ? $params['deduction'] : '';
-      $donationImportValue = ( isset($params['donationImport']) ) ? $params['donationImport'] : '';
-      $donationKindValue = ( isset($params['donationKind']) ) ? $params['donationKind'] : '';
-      $ACDeductionValue = ( isset($params['ACDeduction']) ) ? $params['ACDeduction'] : '';
-      $ACDeductionNumberValue = ( isset($params['ACDeductionNumber']) ) ? $params['ACDeductionNumber'] : '';
-      $natureValue = ( isset($params['nature']) ) ? $params['nature'] : '';
-      $revocationValue = ( isset($params['revocation']) ) ? $params['revocation'] : '';
-      $exerciseRevocationDonativeValue = ( isset($params['exerciseRevocationDonative']))? $params['exerciseRevocationDonative'] : '';
-      $goodTypeValue = ( isset($params['goodType']) ) ? $params['goodType'] : '';
-      $goodIDValue = ( isset($params['goodID']) ) ? $params['goodID'] : '';
-      $recurrenceDonationsValue = ( isset($params['recurrenceDonations']) ) ? $params['recurrenceDonations'] : '';
-      $this->attributes['NIFDeclared'] = array('length' => 9, 'dataType' => 'TEXT', 'trimmable' => 1, 'value' => $NIFDeclaredValue);
-      $this->attributes['NIFRepresentative'] =array('length' => 9, 'dataType' => 'TEXT', 'trimmable' => 1, 'value' => $NIFRepresentativeValue);
-      $this->attributes['declaredName'] = array('length' => 40, 'dataType' => 'TEXT', 'trimmable' => 0, 'value' => $declaredNameValue);
-      $this->attributes['provinceCode'] = array('length' => 2, 'dataType' => 'TEXT', 'trimmable' => 1, 'value' => $provinceCodeValue);
-      $this->attributes['key'] = array('length' => 1, 'dataType' => 'TEXT', 'trimmable' => 1, 'value' => $keyValue);
-      $this->attributes['deduction'] = array('length' => 5, 'dataType' => 'NUM', 'trimmable' => 1, 'value' =>  $deductionValue);
-      $this->attributes['donationImport'] = array('length' => 13, 'dataType' => 'NUM', 'trimmable' => 1, 'value' => $donationImportValue);
-      $this->attributes['donationKind'] = array('length' => 1, 'dataType' => 'TEXT', 'trimmable' => 1, 'value' => $donationKindValue);
-      $this->attributes['ACDeduction'] = array('length' => 2, 'dataType' => 'NUM', 'trimmable' => 1, 'value' => $ACDeductionValue);
-      $this->attributes['ACDeductionNumber'] = array('length' => 5, 'dataType' => 'NUM', 'trimmable' => 1, 'value' => $ACDeductionNumberValue);
-      $this->attributes['nature'] = array('length' => 1, 'dataType' => 'TEXT', 'trimmable' => 1, 'value' => $natureValue);
-      $this->attributes['revocation'] = array('length' => 1, 'dataType' => 'TEXT', 'trimmable' => 1, 'value' => $revocationValue);
-      $this->attributes['exerciseRevocationDonative'] = array('length' => 4, 'dataType' => 'NUM', 'trimmable' => 1, 'value' => $exerciseRevocationDonativeValue);
-      $this->attributes['goodType'] = array('length' => 1, 'dataType' => 'TEXT', 'trimmable' => 1, 'value' => $goodTypeValue);
-      $this->attributes['goodID'] = array('length' => 20, 'dataType' => 'TEXT', 'trimmable' => 1, 'value' => $goodIDValue);
-      $this->attributes['recurrenceDonations'] = array('length' => 1, 'dataType' => 'TEXT', 'trimmable' => 1, 'value' => $recurrenceDonationsValue);
-      $this->attributes['space'] = array('length' => 118, 'dataType' => 'TEXT', 'trimmable' => 'NO', 'value' => '');
+    parent::__construct(2, $params['exercise'], $params['NIFDeclarant'], $params['declarantName']);
+
+    $this->externalIdValue = ( isset($params['externalId']) ) ? $params['externalId'] : '';
+    $NIFDeclaredValue = ( isset($params['NIFDeclared']) ) ? $params['NIFDeclared'] : '';
+    $NIFRepresentativeValue = ( isset($params['NIFRepresentative']) ) ? $params['NIFRepresentative'] : '';
+    $declaredNameValue = ( isset($params['declaredName']) ) ? $params['declaredName'] : '';
+    $provinceCodeValue = ( isset($params['provinceCode']) ) ? $params['provinceCode'] : '';
+    $keyValue = ( isset($params['key']) ) ? $params['key'] : '';
+    $deductionValue = ( isset($params['deduction']) ) ? $params['deduction'] : '';
+    $donationImportValue = ( isset($params['donationImport']) ) ? $params['donationImport'] : '';
+    $donationKindValue = ( isset($params['donationKind']) ) ? $params['donationKind'] : '';
+    $ACDeductionValue = ( isset($params['ACDeduction']) ) ? $params['ACDeduction'] : '';
+    $ACDeductionNumberValue = ( isset($params['ACDeductionNumber']) ) ? $params['ACDeductionNumber'] : '';
+    $natureValue = ( isset($params['nature']) ) ? $params['nature'] : '';
+    $revocationValue = ( isset($params['revocation']) ) ? $params['revocation'] : '';
+    $exerciseRevocationDonativeValue = ( isset($params['exerciseRevocationDonative']))? $params['exerciseRevocationDonative'] : '';
+    $goodTypeValue = ( isset($params['goodType']) ) ? $params['goodType'] : '';
+    $goodIDValue = ( isset($params['goodID']) ) ? $params['goodID'] : '';
+    $recurrenceDonationsValue = ( isset($params['recurrenceDonations']) ) ? $params['recurrenceDonations'] : '';
+    $this->attributes['NIFDeclared'] = array('length' => 9, 'dataType' => 'TEXT', 'trimmable' => 1, 'value' => $NIFDeclaredValue);
+    $this->attributes['NIFRepresentative'] =array('length' => 9, 'dataType' => 'TEXT', 'trimmable' => 1, 'value' => $NIFRepresentativeValue);
+    $this->attributes['declaredName'] = array('length' => 40, 'dataType' => 'TEXT', 'trimmable' => 0, 'value' => $declaredNameValue);
+    $this->attributes['provinceCode'] = array('length' => 2, 'dataType' => 'TEXT', 'trimmable' => 1, 'value' => $provinceCodeValue);
+    $this->attributes['key'] = array('length' => 1, 'dataType' => 'TEXT', 'trimmable' => 1, 'value' => $keyValue);
+    $this->attributes['deduction'] = array('length' => 5, 'dataType' => 'NUM', 'trimmable' => 1, 'value' =>  $deductionValue);
+    $this->attributes['donationImport'] = array('length' => 13, 'dataType' => 'NUM', 'trimmable' => 1, 'value' => $donationImportValue);
+    $this->attributes['donationKind'] = array('length' => 1, 'dataType' => 'TEXT', 'trimmable' => 1, 'value' => $donationKindValue);
+    $this->attributes['ACDeduction'] = array('length' => 2, 'dataType' => 'NUM', 'trimmable' => 1, 'value' => $ACDeductionValue);
+    $this->attributes['ACDeductionNumber'] = array('length' => 5, 'dataType' => 'NUM', 'trimmable' => 1, 'value' => $ACDeductionNumberValue);
+    $this->attributes['nature'] = array('length' => 1, 'dataType' => 'TEXT', 'trimmable' => 1, 'value' => $natureValue);
+    $this->attributes['revocation'] = array('length' => 1, 'dataType' => 'TEXT', 'trimmable' => 1, 'value' => $revocationValue);
+    $this->attributes['exerciseRevocationDonative'] = array('length' => 4, 'dataType' => 'NUM', 'trimmable' => 1, 'value' => $exerciseRevocationDonativeValue);
+    $this->attributes['goodType'] = array('length' => 1, 'dataType' => 'TEXT', 'trimmable' => 1, 'value' => $goodTypeValue);
+    $this->attributes['goodID'] = array('length' => 20, 'dataType' => 'TEXT', 'trimmable' => 1, 'value' => $goodIDValue);
+    $this->attributes['recurrenceDonations'] = array('length' => 1, 'dataType' => 'TEXT', 'trimmable' => 1, 'value' => $recurrenceDonationsValue);
+    $this->attributes['space'] = array('length' => 118, 'dataType' => 'TEXT', 'trimmable' => 'NO', 'value' => '');
   }
 
   /**
@@ -97,9 +99,9 @@ class AEAT182RDeclared extends AEAT182RBase {
       }
       if ($class['dataType'] == 'NUM'){
         if($attribute == 'donationImport' || $attribute == 'deduction' ){
-          $class['value'] = $this->formatToMoney182($class['value']);
-        }
-        $output .= str_pad($class['value'], $class['length'],'0', STR_PAD_LEFT);
+            $class['value'] = $this->formatToMoney182($class['value']);
+          }
+          $output .= str_pad($class['value'], $class['length'],'0', STR_PAD_LEFT);
       }
       else {
         $class['value'] = $this->normalizeAlphanumericFields($class['value']);
@@ -116,4 +118,18 @@ class AEAT182RDeclared extends AEAT182RBase {
     }
   }
 
+  public function getOutput993() {
+    $output = "";
+
+    $output .= $this->normalizeAlphanumericFields($this->attributes['NIFDeclared']['value'],'993') . ';';
+    $output .= ';';
+    // @todo Aquí eliminamos la coma mientras la entrada del nombre y apellidos sea con la coma intercalada. Tenemos que forzar que la entrada sea ya sin la coma
+    $output .= $this->normalizeAlphanumericFields($this->attributes['declaredName']['value'],'993') . ';';
+    $output .= $this->attributes['NIFDeclarant']['value'] . ';';
+    $output .= $this->declarantName . ';';
+    // @todo Hay que sacar la conversion del importe. El importe tiene que entrar limpio ya con coma.
+    $output .= str_replace(".",",",substr($this->attributes['donationImport']['value'],0,-4));
+
+    return $output;
+  }
 }

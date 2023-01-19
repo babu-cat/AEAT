@@ -8,8 +8,9 @@
 abstract class AEAT182RBase {
 
   var $attributes = array();
+  var $declarantName;
 
-  function __construct($rType, $exercise, $NIFDeclarant) {
+  function __construct($rType, $exercise, $NIFDeclarant, $declarantName = NULL) {
     $this->attributes['registerType'] = array (
       'length' => 1,
       'dataType' => 'TEXT',
@@ -34,6 +35,8 @@ abstract class AEAT182RBase {
       'trimmable' => 1,
       'value' => $NIFDeclarant
     );
+
+    $this->declarantName = $declarantName;
   }
 
   /**
@@ -59,7 +62,7 @@ abstract class AEAT182RBase {
    * return string
    */
 
-  function cleanSpecialChars($value) {
+  function cleanSpecialChars($value, $mod = '182') {
 
     $value = str_replace (
       array('á', 'à', 'ä', 'â', 'Á', 'À', 'Â', 'Ä', 'Ã', 'Å'),
@@ -91,25 +94,26 @@ abstract class AEAT182RBase {
       $value
     );
 
-    /*
-    $value = str_replace (
-      array('ñ', 'Ñ', 'ç', 'Ç'),
-      array('n', 'N', 'c', 'C'),
-      $value
-    );
-    */
-
     $value = str_replace (
       array('·', 'ª', 'º', 'Ý', 'Ÿ', 'Ž', ','),
       array('.', '.', '.', 'Y', 'Y', 'Z', ''),
       $value
     );
 
+    if ($mod == '993') {
+      $value = strtoupper($value);
+      $value = str_replace (
+        array('ñ', 'Ñ', 'ç', 'Ç','.'),
+        array('n', 'N', 'c', 'C',''),
+        $value
+      );
+    }
+
     return $value;
   }
 
   /**
-   * Drop the excess spaces not allowed on 182 presentation model
+   * Drop the excess spaces not allowed on 182 and 993 presentation models
    *
    * @param string $value
    *
@@ -117,10 +121,8 @@ abstract class AEAT182RBase {
    */
   function normalizeSpaces($value) {
 
+    $value = preg_replace('/\s\s+/', ' ', $value);
     $value = trim($value);
-    $value = explode(" ",$value);
-    $value = array_filter($value);
-    $value = implode(" ", $value);
 
     return $value;
   }
@@ -132,11 +134,10 @@ abstract class AEAT182RBase {
    *
    * return string
    */
-  function normalizeAlphanumericFields($value) {
+  function normalizeAlphanumericFields($value, $mod = '182') {
 
+    $value = $this->cleanSpecialChars($value, $mod);
     $value = $this->normalizeSpaces($value);
-    $value = $this->cleanSpecialChars($value);
-
     return $value;
   }
 

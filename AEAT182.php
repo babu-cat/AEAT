@@ -22,13 +22,14 @@ class AEAT182 {
   var $declareds = array();
   var $exercise, $NIF_Declarant, $socialReason, $phone, $contactPerson;
 
-  function __construct ($exercise=null, $NIF_Declarant=null, $socialReason=null, $phone=null, $contactPerson=null, $declared=null) {
+  function __construct ($model='182', $exercise=null, $NIF_Declarant=null, $socialReason=null, $phone=null, $contactPerson=null, $declared=null) {
+
     $this->exercise = $exercise;
     $this->NIF_Declarant = $NIF_Declarant;
     $this->socialReason = $socialReason;
     $this->phone = $phone;
     $this->contactPerson = $contactPerson;
-    $this->declarant;
+    $this->declarant;    
     $this->declareds = array();
   }
 
@@ -61,6 +62,7 @@ class AEAT182 {
    *
    * @param $params array ['exercise' => string
    *                       'NIFDeclarant' => string
+   *                       'declarantName' => string Necesario para la generación del fichero 993
    *                       'NIFDeclared' => string
    *                       'NIFRepresentative' => string
    *                       'declaredName' => string
@@ -90,6 +92,7 @@ class AEAT182 {
    * @return array if $onlyErrors is true, string otherwise
    */
   private function getOutput($onlyErrors=false) {
+
     $output = array();
     $warnings = array();
     $errors = array();
@@ -104,6 +107,7 @@ class AEAT182 {
         $output[] = $declared->getOutput($onlyErrors);
       }
     }
+
     if ($onlyErrors == true) {
       $output = array_filter($output);
       foreach ($output as $key => $error) {
@@ -121,20 +125,53 @@ class AEAT182 {
     }
   }
 
+    /**
+   *
+   * @return array if $onlyErrors is true, string otherwise
+   */
+  private function getOutput993() {
+
+    $output = array();
+    $warnings = array();
+    $errors = array();
+
+    // CSV headers for 993
+    $output[] = "NIF del donant;NIF del Representant;COGNOM1 COGNOM2 NOM;NIF de la entitat receptora;NOM o RAO SOCIAL de la entitat receptora;Import en euros";
+
+    foreach ($this->declareds as $declared) {
+      if( !empty($declared->externalIdValue) ) {
+        $output[$declared->externalIdValue] = $declared->getOutput993();
+      }
+      else {
+        $output[] = $declared->getOutput993();
+      }
+    }
+
+    return implode(self::AEAT182_EOL, $output);
+  }
+
   /**
    * Output catches the information from the getOutput
    *
    * @param boolean $download
+   * @param string $mod
    */
-  public function saveFile($download = true) {
+  public function saveFile($download = true, $mod = '182') {
     $output = '';
-    $output = utf8_decode($this->getOutput());
+    if ($mod == '993') {
+      $output = $this->getOutput993();
+    }
+    else {
+      $output = $this->getOutput();
+    }
+    $output = utf8_decode($output);
+    $filename = ( $mod == '993' ) ? '993.csv' : '182.182'; 
 
     if ($download == true) {
       header('Cache-Control: no-cache, must-revalidate');
       header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
       header('Pragma: private');
-      header('Content-Disposition: attachment; filename=182.182');
+      header('Content-Disposition: attachment; filename=' . $filename);
       header('Content-Length: ' . strlen($output));
       header('Content-Type: application/octet-stream; charset=iso-8859-1');
       echo $output;
