@@ -104,7 +104,7 @@ abstract class AEAT182RBase {
       $value = strtoupper($value);
       $value = str_replace (
         array('ñ', 'Ñ', 'ç', 'Ç','.'),
-        array('n', 'N', 'c', 'C',''),
+        array('N', 'N', 'C', 'C',''),
         $value
       );
     }

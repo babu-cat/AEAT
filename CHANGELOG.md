@@ -1,4 +1,7 @@
 # CHANGELOG
+
+## 1.5.1 (2023-01-20)
+- Fix incorrect normalization for characters ñ and ç
 ## 1.5.0 (2023-01-19)
 - Adds funcionality for 993 presentation model
 
