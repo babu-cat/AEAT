@@ -1,4 +1,6 @@
 # CHANGELOG
+## 1.5.3 (2023-02-01)
+- Warning message for 993 model and export buttons according to filters
 
 ## 1.5.1 (2023-01-20)
 - Fix incorrect normalization for characters ñ and ç
