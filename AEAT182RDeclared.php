@@ -98,10 +98,7 @@ class AEAT182RDeclared extends AEAT182RBase {
         }
       }
       if ($class['dataType'] == 'NUM'){
-        if($attribute == 'donationImport' || $attribute == 'deduction' ){
-            $class['value'] = $this->formatToMoney182($class['value']);
-          }
-          $output .= str_pad($class['value'], $class['length'],'0', STR_PAD_LEFT);
+        $output .= str_pad($class['value'], $class['length'],'0', STR_PAD_LEFT);
       }
       else {
         $class['value'] = $this->normalizeAlphanumericFields($class['value']);
@@ -121,14 +118,14 @@ class AEAT182RDeclared extends AEAT182RBase {
   public function getOutput993() {
     $output = "";
 
+    $donationImport = $this->attributes['donationImport']['value'];
+
     $output .= $this->normalizeAlphanumericFields($this->attributes['NIFDeclared']['value'],'993') . ';';
     $output .= ';';
-    // @todo Aquí eliminamos la coma mientras la entrada del nombre y apellidos sea con la coma intercalada. Tenemos que forzar que la entrada sea ya sin la coma
     $output .= $this->normalizeAlphanumericFields($this->attributes['declaredName']['value'],'993') . ';';
     $output .= $this->attributes['NIFDeclarant']['value'] . ';';
     $output .= $this->declarantName . ';';
-    // @todo Hay que sacar la conversion del importe. El importe tiene que entrar limpio ya con coma.
-    $output .= str_replace(".",",",substr($this->attributes['donationImport']['value'],0,-4));
+    $output .= substr_replace($donationImport, ',', strlen($donationImport)-2, 0);
 
     return $output;
   }

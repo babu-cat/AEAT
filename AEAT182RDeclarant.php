@@ -95,9 +95,6 @@ class AEAT182RDeclarant extends AEAT182RBase {
           $output .= str_pad($class['value'], $class['length'], '0', STR_PAD_RIGHT);
         }
         else {
-          if ($attribute == 'donationsImport') {
-            $class['value'] = $this->formatToMoney182($class['value']);
-          }
           $output .= str_pad($class['value'], $class['length'], '0', STR_PAD_LEFT);
         }
       }

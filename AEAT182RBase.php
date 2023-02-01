@@ -40,13 +40,6 @@ abstract class AEAT182RBase {
   }
 
   /**
-   * @return integer
-   */
-  function formatToMoney182($import) {
-    return intval( floatval($import) * 100 );
-  }
-
-  /**
    * Based on https://www.php.net/manual/es/function.str-pad.php#116616
    */
   function mb_str_pad($input, $pad_length) {
