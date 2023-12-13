@@ -205,7 +205,7 @@ class AEAT182 {
    *
    * @return array[percentage,recurrence]
    */
-  static public function getDeductionPercentAndDonationsRecurrence($contactType, $amountThisYear, $amountLastYear, $amountTwoYearBefore) {
+  static public function getDeductionPercentAndDonationsRecurrence($contactType, $amountThisYear, $amountLastYear, $amountTwoYearBefore, $cp) {
 
     // Ley 49/2002, de 23 de diciembre, de régimen fiscal de las entidades sin fines lucrativos y de los incentivos fiscales al mecenazgo.
 
@@ -227,26 +227,38 @@ class AEAT182 {
     if ($contactType == self::NATURAL_PERSON) {
       if ($amountThisYear <= 150) {
         $deduction_amount = '80';
+        $deducted_amount = $amountThisYear * 80 * 0.01;
       }
-      elseif ($amountThisYear > 150 &&  $donationsRecurrence == 1) {
-        $deduction_amount = '40';
+      else{
+        $partial_amount = $amountThisYear - 150;
+        if ($donationsRecurrence == 1) {
+          $deduction_amount = '40';
+        }
+        else {
+          $deduction_amount = '35';
+        }
+        $deducted_amount = (150 * 80 * 0.01) + ($partial_amount * intval($deduction_amount) * 0.01);
       }
-      else {
-        $deduction_amount = '35';
+      //Si el declarante pertenece a una provincia catalana, se le añade la deducción del 15% del tramo autonómico
+      if (self::isAutonomousCommunityProvince(substr( $cp, 0, 2 ),self::ACC_CATALONIA)) 
+      {
+        $deducted_amount += $amountThisYear * 15 * 0.01;
       }
     }
     elseif ($contactType == self::SOCIETIES) {
       if ($donationsRecurrence == 1) {
         $deduction_amount = '40';
+        $deducted_amount = $amountThisYear * 40 * 0.01;
       }
       else {
         $deduction_amount = '35';
+        $deducted_amount = $amountThisYear * 35 * 0.01;
       }
     }
     else {
       return array();
     }
-    return array('percentage' => $deduction_amount , 'recurrence' => $donationsRecurrence);
+    return array('percentage' => $deduction_amount , 'recurrence' => $donationsRecurrence, 'reduction' => strval(number_format($deducted_amount, 2, ',', ' ')) . ' €', 'actual_amount' => strval(number_format($amountThisYear - $deducted_amount, 2, ',', ' ')) . ' €');
   }
 
   /**
