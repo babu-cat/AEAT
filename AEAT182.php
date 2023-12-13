@@ -202,8 +202,9 @@ class AEAT182 {
    * @param decimal $amountThisYear
    * @param decimal $amountLastYear
    * @param decimal $amountTwoYearBefore
-   *
-   * @return array[percentage,recurrence]
+   * @param string $cp
+   * 
+   * @return array[percentage,recurrence,reduction,actual_amount]
    */
   static public function getDeductionPercentAndDonationsRecurrence($contactType, $amountThisYear, $amountLastYear, $amountTwoYearBefore, $cp) {
 
