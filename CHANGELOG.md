@@ -1,4 +1,7 @@
 # CHANGELOG
+## 1.5.4 (2023-12-13)
+- Add possibility to get teorical deducted amount and teorical donation cost for year donations
+
 ## 1.5.3 (2023-02-01)
 - Warning message for 993 model and export buttons according to filters
 
