@@ -164,7 +164,7 @@ class AEAT182 {
     else {
       $output = $this->getOutput();
     }
-    $output = utf8_decode($output);
+    $output = mb_convert_encoding($output, 'ISO-8859-1', 'UTF-8');
     $filename = ( $mod == '993' ) ? '993.csv' : '182.182'; 
 
     if ($download == true) {
