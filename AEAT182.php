@@ -241,8 +241,7 @@ class AEAT182 {
         $deducted_amount = (150 * 80 * 0.01) + ($partial_amount * intval($deduction_amount) * 0.01);
       }
       //Si el declarante pertenece a una provincia catalana, se le añade la deducción del 15% del tramo autonómico
-      if (self::isAutonomousCommunityProvince(substr( $cp, 0, 2 ),self::ACC_CATALONIA)) 
-      {
+      if (self::isAutonomousCommunityProvince(substr( $cp, 0, 2 ),self::ACC_CATALONIA)) {
         $deducted_amount += $amountThisYear * 15 * 0.01;
       }
     }
@@ -282,4 +281,25 @@ class AEAT182 {
       return false;
     }
   }
+
+  /**
+   * Check if is an spanish postal code
+   *
+   * @param string $postalCode
+   *
+   * @return boolean
+   *
+   */
+  static function checkPostalCode ($postalCode) {
+    if ( preg_match('/^[0-9]{5}$/i', $postalCode) ) {
+      $postalCode = intval( mb_substr($postalCode,0,2) );
+      if ( $postalCode >= 1 && $postalCode <= 52 ) {
+        return true;
+      }
+    }
+    else {
+      return false;
+    }
+  }
+
 }
