@@ -124,7 +124,7 @@ class AEAT182RDeclared extends AEAT182RBase {
     $output .= ';';
     $output .= $this->normalizeAlphanumericFields($this->attributes['declaredName']['value'],'993') . ';';
     $output .= $this->attributes['NIFDeclarant']['value'] . ';';
-    $output .= $this->declarantName . ';';
+    $output .= $this->normalizeAlphanumericFields($this->declarantName,993) . ';';
     $output .= substr_replace($donationImport, ',', strlen($donationImport)-2, 0);
 
     return $output;
