@@ -1,7 +1,11 @@
 # CHANGELOG
 
-## 1.5.5 (2024-01-XX)
-- Adds function to check the validity of postal codes
+## 1.5.5 (2024-01-16)
+- Add function to check the validity of postal codes
+- Add postal code function validator
+- getDeductionPercentAndDonationsRecurrence function now return an estimation of the tax deductible amount for the donor according to the new 2024 regulation, an estimation of ther real donation cost amount for the donor according to the new 2024 regulation, and the increase in donation that the donor can make in 2024 compared to 2023 without incurring an extra cost
+- Force normalization for declarant name on 993 outputfile
+- PHP 8.0 compatibility
 
 ## 1.5.4 (2023-12-13)
 - Add possibility to get teorical deducted amount and teorical donation cost for year donations
