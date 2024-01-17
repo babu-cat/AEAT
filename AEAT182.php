@@ -300,7 +300,7 @@ class AEAT182 {
      
       // Si el importe no supera los 150€, no hay ningún cambio. En caso contrario, se aplica la nueva fórmula
       if ($amountThisYear <= 150) {
-        $contribution_new = $amountThisYear;
+        $contribution_new = 0;
       }else{
         $old_partial_amount = $amountThisYear-150;
         $eq = (($old_partial_amount-(($old_deduction*0.01)*$old_partial_amount))-($old_partial_amount-(0.01*$new_reduction)*$old_partial_amount))*$constant;
