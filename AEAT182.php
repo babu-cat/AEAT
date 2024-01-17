@@ -308,7 +308,7 @@ class AEAT182 {
         $eq_amountThisYear = $eq + $amountThisYear;
 
         if($eq_amountThisYear <= 250){
-          $contribution_new = $eq_amountThisYear;
+          $contribution_new = $eq;
         }else{
           //Import fix per als primers 250€
           $contribucion_new_less_250 = 250 * (0.01*(100-$new_reduction));
@@ -331,7 +331,8 @@ class AEAT182 {
             }
           }
           $contribucion_new_more_250 = $diff_actual_amount * 100 / (100 - $deduction_amount_partial);
-          $contribution_new = 250 + $contribucion_new_more_250;
+          $contribution_new_total = 250 + $contribucion_new_more_250;
+          $contribution_new = $contribution_new_total - $amountThisYear;
         }
       }
       // Fin bloque relativo a la nueva normativa para 2024 de personas físicas
