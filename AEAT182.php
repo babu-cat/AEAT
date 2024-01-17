@@ -300,7 +300,7 @@ class AEAT182 {
      
       // Si el importe no supera los 150€, no hay ningún cambio. En caso contrario, se aplica la nueva fórmula
       if ($amountThisYear <= 150) {
-        $contribution_new = $amountThisYear;
+        $contribution_new = 0;
       }else{
         $old_partial_amount = $amountThisYear-150;
         $eq = (($old_partial_amount-(($old_deduction*0.01)*$old_partial_amount))-($old_partial_amount-(0.01*$new_reduction)*$old_partial_amount))*$constant;
@@ -308,7 +308,7 @@ class AEAT182 {
         $eq_amountThisYear = $eq + $amountThisYear;
 
         if($eq_amountThisYear <= 250){
-          $contribution_new = $eq_amountThisYear;
+          $contribution_new = $eq;
         }else{
           //Import fix per als primers 250€
           $contribucion_new_less_250 = 250 * (0.01*(100-$new_reduction));
@@ -331,7 +331,8 @@ class AEAT182 {
             }
           }
           $contribucion_new_more_250 = $diff_actual_amount * 100 / (100 - $deduction_amount_partial);
-          $contribution_new = 250 + $contribucion_new_more_250;
+          $contribution_new_total = 250 + $contribucion_new_more_250;
+          $contribution_new = $contribution_new_total - $amountThisYear;
         }
       }
       // Fin bloque relativo a la nueva normativa para 2024 de personas físicas
