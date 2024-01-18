@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 1.5.7 (2024-01-18)
+- getDeductionPercentAndDonationsRecurrence returns now '0€'... also by organizations
+
 ## 1.5.6 (2024-01-17)
 - getDeductionPercentAndDonationsRecurrence returns now '0€' if the new 2024 regulation doesn't have
 any effect on the donation amount (i.e The current donation is less than 150€) and returns the possible increase that the donor can make keeping constant the real cost (i.e Individual donations over 150€ and all societies donations)
