@@ -340,7 +340,8 @@ class AEAT182 {
     elseif ($contactType == self::SOCIETIES) {
       //Bloque relativo a la nueva normativa para 2024 de personas Jurídicas
       //Cálculo del porcentaje de la aportación que asume el contribuyente
-      $contribution_new = ($amountThisYear - $deducted_amount) * 100 / (100-$deduction_amount_new);
+      $contribution_new_total = ($amountThisYear - $deducted_amount) * 100 / (100-$deduction_amount_new);
+      $contribution_new = $contribution_new_total - $amountThisYear;
       // Fin bloque relativo a la nueva normativa para 2024 de personas jurídicas
     }
 
