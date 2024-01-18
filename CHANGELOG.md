@@ -2,6 +2,7 @@
 
 ## 1.5.7 (2024-01-18)
 - getDeductionPercentAndDonationsRecurrence returns now '0€'... also by organizations
+- Add functions to get total amount and contributors on 182
 
 ## 1.5.6 (2024-01-17)
 - getDeductionPercentAndDonationsRecurrence returns now '0€' if the new 2024 regulation doesn't have
