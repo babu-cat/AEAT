@@ -400,4 +400,22 @@ class AEAT182 {
     }
   }
 
+  /**
+   * Returns total donations amount
+   *
+   * @return float
+   *
+   */  public function getImport() {
+    return floatval($this->declarant->attributes['donationsImport']['value'] / 100);
+  }
+
+  /**
+   * Returns total number of contributors
+   *
+   * @return integer
+   *
+   */  public function getContributorsQty() {
+    return $this->declarant->attributes['registerNumber']['value'];
+   }
+
 }
