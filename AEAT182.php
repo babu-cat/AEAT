@@ -22,8 +22,7 @@ class AEAT182 {
   var $declareds = array();
   var $exercise, $NIF_Declarant, $socialReason, $phone, $contactPerson;
 
-  function __construct ($model='182', $exercise=null, $NIF_Declarant=null, $socialReason=null, $phone=null, $contactPerson=null, $declared=null) {
-
+  function __construct ($model='182', $exercise=null, $NIF_Declarant=null, $socialReason=null, $phone=null, $contactPerson=null, $declared=null, $autonomousDeduction=false) {
     $this->exercise = $exercise;
     $this->NIF_Declarant = $NIF_Declarant;
     $this->socialReason = $socialReason;
@@ -31,6 +30,7 @@ class AEAT182 {
     $this->contactPerson = $contactPerson;
     $this->declarant;    
     $this->declareds = array();
+    $this->autonomousDeduction = $autonomousDeduction;
   }
 
   /**
@@ -204,9 +204,9 @@ class AEAT182 {
    * @param decimal $amountTwoYearBefore
    * @param string $cp
    * 
-   * @return array[percentage,recurrence,reduction,actual_amount,reduction_new,actual_amount_new,contribution_new]
+   * @return array[percentage,recurrence,reduction,actual_amount_min,actual_amount_max,reduction_new,actual_amount_min_new,actual_amount_max_new,contribution_new_min,contribution_new_max]
    */
-  static public function getDeductionPercentAndDonationsRecurrence($contactType, $amountThisYear, $amountLastYear, $amountTwoYearBefore, $cp) {
+  public function getDeductionPercentAndDonationsRecurrence($contactType, $amountThisYear, $amountLastYear, $amountTwoYearBefore, $cp) {
 
     // Ley 49/2002, de 23 de diciembre, de régimen fiscal de las entidades sin fines lucrativos y de los incentivos fiscales al mecenazgo.
 
@@ -227,25 +227,30 @@ class AEAT182 {
     }
 
     if ($contactType == self::NATURAL_PERSON) {
+      $min_current_deduction = $donationsRecurrence == 1 ? 40 : 35 ;
+      $max_current_deduction = 80 ;
       if ($amountThisYear <= 150) {
-        $deduction_amount = '80';
-        $deducted_amount = $amountThisYear * 80 * 0.01;
+        $deducted_amount_max = $amountThisYear * intval($max_current_deduction) * 0.01;
+        $deducted_amount_min = $amountThisYear * intval($min_current_deduction) * 0.01;
       }
       else{
         $partial_amount = $amountThisYear - 150;
         if ($donationsRecurrence == 1) {
-          $deduction_amount = '40';
+          //$deduction_amount = '40';
         }
         else {
-          $deduction_amount = '35';
+          //$deduction_amount = '35';
         }
-        $deducted_amount = (150 * 80 * 0.01) + ($partial_amount * intval($deduction_amount) * 0.01);
+        $deducted_amount_min = $amountThisYear * $min_current_deduction * 0.01;
+        $deducted_amount_max = (150 * $max_current_deduction * 0.01) + ($partial_amount * intval($min_current_deduction) * 0.01);
       }
-
+      
       //Bloque relativo a la nueva normativa para 2024 de personas físicas
+      $min_current_deduction_new = $donationsRecurrence == 1 ? 45 : 40 ;
+      $max_current_deduction_new = 80 ;
       if ($amountThisYear <= 250) {
-        $deduction_amount_new = '80';
-        $deducted_amount_new = $amountThisYear * 80 * 0.01;
+        $deducted_amount_new_max = $amountThisYear * $max_current_deduction_new * 0.01;
+        $deducted_amount_new_min = $amountThisYear * $min_current_deduction_new * 0.01;
       }
       else{
         $partial_amount_new = $amountThisYear - 250;
@@ -255,15 +260,22 @@ class AEAT182 {
         else {
           $deduction_amount_new = '40';
         }
-        $deducted_amount_new = (250 * 80 * 0.01) + ($partial_amount_new * intval($deduction_amount_new) * 0.01);
+        $deducted_amount_new_min = $amountThisYear * $min_current_deduction_new * 0.01;
+        $deducted_amount_new_max = (250 * $max_current_deduction_new * 0.01) + ($partial_amount_new * intval($min_current_deduction_new) * 0.01);
       }      
       // Fin bloque relativo a la nueva normativa para 2024 de personas físicas
 
       //Si el declarante pertenece a una provincia catalana, se le añade la deducción del 15% del tramo autonómico
-      if (self::isAutonomousCommunityProvince(substr( $cp, 0, 2 ),self::ACC_CATALONIA)) 
+      if ($this->autonomousDeduction && self::isAutonomousCommunityProvince(substr( $cp, 0, 2 ),self::ACC_CATALONIA)) 
       {
-        $deducted_amount += $amountThisYear * 15 * 0.01;
-        $deducted_amount_new += $amountThisYear * 15 * 0.01; //Importe según normativa 2024
+        $deducted_amount_min += $amountThisYear * 15 * 0.01;
+        $deducted_amount_max += $amountThisYear * 15 * 0.01;
+        $deducted_amount_new_min += $amountThisYear * 15 * 0.01;
+        $deducted_amount_new_max += $amountThisYear * 15 * 0.01;
+        $min_current_deduction += 15 ;
+        $max_current_deduction += 15 ;
+        $min_current_deduction_new += 15;
+        $max_current_deduction_new += 15;      
       }
     }
     elseif ($contactType == self::SOCIETIES) {
@@ -293,31 +305,45 @@ class AEAT182 {
 
       // Inicio bloque cálculo de nueva contribución para 2024 para que el coste real sea el mismo que con la normativa anterior
       //Bloque relativo a la nueva normativa para 2024 de personas físicas
-      if ($contactType == self::NATURAL_PERSON) {
-      $old_deduction = self::isAutonomousCommunityProvince(substr( $cp, 0, 2 ),self::ACC_CATALONIA) ? $deduction_amount + 15 : $deduction_amount;
-      $new_reduction = self::isAutonomousCommunityProvince(substr( $cp, 0, 2 ),self::ACC_CATALONIA) ? 95 : 80 ;
-      $constant = self::isAutonomousCommunityProvince(substr( $cp, 0, 2 ),self::ACC_CATALONIA) ? 20 : 5 ;
+      if ($contactType == self::NATURAL_PERSON) {      
+      //Porcentaje de deducción mínimo según nueva normativa
+      $new_deduction_min = $donationsRecurrence == 1 ? 45 : 40 ;
+      $new_deduction_max = 80 ;
+      //Si le resulta aplicable el tramo de deducción autonómica, la deducción mínima se incrementa un 15%
+      if ($this->autonomousDeduction && self::isAutonomousCommunityProvince(substr( $cp, 0, 2 ),self::ACC_CATALONIA)) {
+        $new_deduction_min += 15 ;
+        $new_deduction_max += 15 ;
+      }
+
+      //$constant = self::isAutonomousCommunityProvince(substr( $cp, 0, 2 ),self::ACC_CATALONIA) ? 20 : 5 ;
+      $constant_max = 100 / (100 - $new_deduction_max);
+      $constant_min = 100 / (100 - $new_deduction_min);
      
       // Si el importe no supera los 150€, no hay ningún cambio. En caso contrario, se aplica la nueva fórmula
       if ($amountThisYear <= 150) {
-        $contribution_new = 0;
+        $contribution_new_max = 0;
+        $contribution_new_min = 0;
       }else{
         $old_partial_amount = $amountThisYear-150;
-        $eq = (($old_partial_amount-(($old_deduction*0.01)*$old_partial_amount))-($old_partial_amount-(0.01*$new_reduction)*$old_partial_amount))*$constant;
-        //Suma de aportación último año + resultado de la fórmula
-        $eq_amountThisYear = $eq + $amountThisYear;
+        $eq_max = (($old_partial_amount-(($min_current_deduction*0.01)*$old_partial_amount))-($old_partial_amount-(0.01*$new_deduction_max)*$old_partial_amount))*$constant_max;
+        //Suma de aportación último año + resultado de la fórmula con la desgravación máxima
+        $eq_amountThisYear_max = $eq_max + $amountThisYear;
+        
+        //Cálculos relativos a la desgravación mínima
+        $contribution_new_min_increase = (($amountThisYear - $deducted_amount_min)*100)/(100-$new_deduction_min);
+        $contribution_new_min = $contribution_new_min_increase - $amountThisYear;
 
-        if($eq_amountThisYear <= 250){
-          $contribution_new = $eq;
+        //Cálculos relativos a la desgravación máxima
+        if($eq_amountThisYear_max <= 250){
+          $contribution_new_max = $eq_max;
         }else{
           //Import fix per als primers 250€
-          $contribucion_new_less_250 = 250 * (0.01*(100-$new_reduction));
-
+          $contribucion_new_less_250_max = 250 * (0.01*(100-$max_current_deduction_new));
           //Import real per restant fins a igualar aportació de 2023
-          $diff_actual_amount = ($amountThisYear - $deducted_amount) - $contribucion_new_less_250;
+          $diff_actual_amount_max = ($amountThisYear - $deducted_amount_max) - $contribucion_new_less_250_max;
 
           //calcular nuevos porcentajes de deducción a partir de la nueva cantidad (suma de aportación último año + resultado de la fórmula)
-          if($eq_amountThisYear > 250)
+          if($eq_amountThisYear_max > 250)
           {
             if ($donationsRecurrence == 1) {
               $deduction_amount_partial = '45';
@@ -326,13 +352,13 @@ class AEAT182 {
               $deduction_amount_partial = '40';
             }
 
-            if (self::isAutonomousCommunityProvince(substr( $cp, 0, 2 ),self::ACC_CATALONIA)) {
+            if ($this->autonomousDeduction && self::isAutonomousCommunityProvince(substr( $cp, 0, 2 ),self::ACC_CATALONIA)) {
               $deduction_amount_partial += 15 ;
             }
           }
-          $contribucion_new_more_250 = $diff_actual_amount * 100 / (100 - $deduction_amount_partial);
-          $contribution_new_total = 250 + $contribucion_new_more_250;
-          $contribution_new = $contribution_new_total - $amountThisYear;
+          $contribucion_new_max_more_250 = $diff_actual_amount_max * 100 / (100 - $new_deduction_min);
+          $contribution_new_max_total = 250 + $contribucion_new_max_more_250;
+          $contribution_new_max = $contribution_new_max_total - $amountThisYear;
         }
       }
       // Fin bloque relativo a la nueva normativa para 2024 de personas físicas
@@ -340,22 +366,26 @@ class AEAT182 {
     elseif ($contactType == self::SOCIETIES) {
       //Bloque relativo a la nueva normativa para 2024 de personas Jurídicas
       //Cálculo del porcentaje de la aportación que asume el contribuyente
-      $contribution_new_total = ($amountThisYear - $deducted_amount) * 100 / (100-$deduction_amount_new);
-      $contribution_new = $contribution_new_total - $amountThisYear;
+      $contribution_new_max_total = ($amountThisYear - $deducted_amount) * 100 / (100-$deduction_amount_new);
+      $contribution_new_max = $contribution_new_min = $contribution_new_max_total - $amountThisYear;
       // Fin bloque relativo a la nueva normativa para 2024 de personas jurídicas
     }
 
     // Fin bloque cálculo de nueva contribución para 2024 para que el coste real sea el mismo que con la normativa anterior
     $actualAmount = $amountThisYear - $deducted_amount;
     $actualAmountNew = $amountThisYear - $deducted_amount_new;
-
     return array( 'percentage' => $deduction_amount , 
                   'recurrence' => $donationsRecurrence,   
-                  'reduction' => strval(number_format($deducted_amount, 2, ',', ' ')) . ' €', 
-                  'actual_amount' => strval(number_format($amountThisYear - $deducted_amount, 2, ',', ' ')) . ' €',
-                  'reduction_new' => strval(number_format($deducted_amount_new, 2, ',', ' ')) . ' €', 
-                  'actual_amount_new' => strval(number_format($amountThisYear - $deducted_amount_new, 2, ',', ' ')) . ' €' ,          
-                  'contribution_new' => strval(number_format($contribution_new, 2, ',', ' ')) . ' €'           
+                  'reduction_min' => strval(number_format($deducted_amount_min, 2, ',', ' ')) . ' €', 
+                  'reduction_max' => strval(number_format($deducted_amount_max, 2, ',', ' ')) . ' €', 
+                  'actual_amount_min' => strval(number_format($amountThisYear - $deducted_amount_max, 2, ',', ' ')) . ' €', //coste mínimo para el donante aplicando la desgravación máxima
+                  'actual_amount_max' => strval(number_format($amountThisYear - $deducted_amount_min, 2, ',', ' ')) . ' €', //todo: coste máximo para el donante aplicando la desgravación mínima
+                  'reduction_new_min' => strval(number_format($deducted_amount_new_min, 2, ',', ' ')) . ' €', 
+                  'reduction_new_max' => strval(number_format($deducted_amount_new_max, 2, ',', ' ')) . ' €', 
+                  'actual_amount_min_new' => strval(number_format($amountThisYear - $deducted_amount_new_max, 2, ',', ' ')) . ' €' , //coste mínimo para el donante aplicando la desgravación máxima
+                  'actual_amount_max_new' => strval(number_format($amountThisYear - $deducted_amount_new_min, 2, ',', ' ')) . ' €' , //todo: coste máximo para el donante aplicando la desgravación mínima      
+                  'contribution_new_min' => strval(number_format($contribution_new_min, 2, ',', ' ')) . ' €',           
+                  'contribution_new_max' => strval(number_format($contribution_new_max, 2, ',', ' ')) . ' €'           
                 );
   }
 
