@@ -215,7 +215,11 @@ class AEAT182 {
     $deduction_amount = 0;
     $deduction_amount_new = 0;
     $deducted_amount = 0;
+    $deducted_amount_min = 0;
+    $deducted_amount_max = 0;
     $deducted_amount_new = 0;
+    $deducted_amount_new_min = 0;
+    $deducted_amount_new_max = 0;
     $donationsRecurrence = 0;
 
     //TODO Con la normativa de 2024, la recurrencia solo tendrá en cuenta los dos últimos años
@@ -239,10 +243,10 @@ class AEAT182 {
       else{
         $partial_amount = $amountThisYear - 150;
         if ($donationsRecurrence == 1) {
-          // $deduction_amount = '40';
+           $deduction_amount = '40';
         }
         else {
-          // $deduction_amount = '35';
+           $deduction_amount = '35';
         }
         $deducted_amount_min = $amountThisYear * $min_current_deduction * 0.01;
         $deducted_amount_max = (150 * $max_current_deduction * 0.01) + ($partial_amount * intval($min_current_deduction) * 0.01);
