@@ -20,7 +20,7 @@ class AEAT182 {
 
   var $declarant;
   var $declareds = array();
-  var $exercise, $NIF_Declarant, $socialReason, $phone, $contactPerson;
+  var $exercise, $NIF_Declarant, $socialReason, $phone, $contactPerson, $autonomousDeduction;
 
   function __construct ($model='182', $exercise=null, $NIF_Declarant=null, $socialReason=null, $phone=null, $contactPerson=null, $declared=null, $autonomousDeduction=false) {
     $this->exercise = $exercise;
@@ -199,9 +199,9 @@ class AEAT182 {
   /**
    *
    * @param int $contactType {NATURAL_PERSON, SOCIETIES}
-   * @param decimal $amountThisYear
-   * @param decimal $amountLastYear
-   * @param decimal $amountTwoYearBefore
+   * @param float $amountThisYear
+   * @param float $amountLastYear
+   * @param float $amountTwoYearBefore
    * @param string $cp
    * 
    * @return array[percentage,recurrence,reduction,actual_amount_min,actual_amount_max,reduction_new,actual_amount_min_new,actual_amount_max_new,contribution_new_min,contribution_new_max]
@@ -213,6 +213,10 @@ class AEAT182 {
     // [Artículo 19. Deducción de la cuota del Impuesto sobre la Renta de las Personas Físicas](https://www.boe.es/buscar/act.php?id=BOE-A-2002-25039&p=20191228&tn=1#a19)
     // [Artículo 20. Deducción de la cuota del Impuesto sobre Sociedades](https://www.boe.es/buscar/act.php?id=BOE-A-2002-25039&p=20191228&tn=1#a20)
 
+    $deduction_amount = 0;
+    $deduction_amount_new = 0;
+    $deducted_amount = 0;
+    $deducted_amount_new = 0;
     $donationsRecurrence = 0;
 
     //TODO Con la normativa de 2024, la recurrencia solo tendrá en cuenta los dos últimos años
