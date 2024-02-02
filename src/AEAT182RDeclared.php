@@ -1,6 +1,6 @@
 <?php
 
-require_once 'AEAT182RBase.php';
+namespace babucat\AEAT;
 
 /**
  *
@@ -8,6 +8,10 @@ require_once 'AEAT182RBase.php';
  *
  */
 class AEAT182RDeclared extends AEAT182RBase {
+
+  var $externalIdValue;
+
+
   /**
    * Class constructor.
    *

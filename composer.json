@@ -1,0 +1,34 @@
+{
+    "name": "babucat/aeat",
+    "description": "Utilidad PHP de propósito general para la confección y presentación de modelos de la [Agencia Estatal de Administració Tributaria](https://www.agenciatributaria.es).",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Francesc Bassas i Bullich"
+        },
+        {
+            "name": "Xavier de la Encarnación Gómez"
+        }
+    ],
+    "version": "1.5.8",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+          "babucat\\AEAT\\": "src/"
+        },
+        "files": [
+        "src/AEAT182.php",
+        "src/AEAT182RBase.php",
+        "src/AEAT182RDeclarant.php",
+        "src/AEAT182RDeclared.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+          "babucat\\tests\\AEAT\\": "tests/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.5"
+    }
+}

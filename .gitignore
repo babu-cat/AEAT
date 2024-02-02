@@ -1,1 +1,5 @@
 .vscode/settings.json
+.phpunit.cache
+.phpunit.result.cache
+vendor
+

@@ -1,6 +1,6 @@
 <?php
 
-require_once 'AEAT182RBase.php';
+namespace babucat\AEAT;
 
 /**
  *

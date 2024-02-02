@@ -1,7 +1,6 @@
 <?php
 
-require_once 'AEAT182RDeclarant.php';
-require_once 'AEAT182RDeclared.php';
+namespace babucat\AEAT;
 
 class AEAT182 {
 
@@ -240,10 +239,10 @@ class AEAT182 {
       else{
         $partial_amount = $amountThisYear - 150;
         if ($donationsRecurrence == 1) {
-          //$deduction_amount = '40';
+          // $deduction_amount = '40';
         }
         else {
-          //$deduction_amount = '35';
+          // $deduction_amount = '35';
         }
         $deducted_amount_min = $amountThisYear * $min_current_deduction * 0.01;
         $deducted_amount_max = (150 * $max_current_deduction * 0.01) + ($partial_amount * intval($min_current_deduction) * 0.01);

@@ -1,5 +1,7 @@
 <?php
 
+namespace babucat\AEAT;
+
 /**
  *
  * @package AEAT182
