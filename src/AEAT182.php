@@ -234,7 +234,7 @@ class AEAT182 {
     }
 
     if ($contactType == self::NATURAL_PERSON) {
-      $min_current_deduction = $donationsRecurrence == 1 ? 40 : 35 ;
+      $min_current_deduction = $donationsRecurrence == 1 ? '40' : '35' ;
       $max_current_deduction = 80 ;
       if ($amountThisYear <= 150) {
         $deducted_amount_max = $amountThisYear * intval($max_current_deduction) * 0.01;
@@ -287,22 +287,22 @@ class AEAT182 {
     }
     elseif ($contactType == self::SOCIETIES) {
       if ($donationsRecurrence == 1) {
-        $deduction_amount = '40';
-        $deducted_amount = $amountThisYear * 40 * 0.01;
+        $min_current_deduction = '40';
+        $deducted_amount_min = $deducted_amount_max = $amountThisYear * 40 * 0.01;
       }
       else {
-        $deduction_amount = '35';
-        $deducted_amount = $amountThisYear * 35 * 0.01;
+        $min_current_deduction = '35';
+        $deducted_amount_min = $deducted_amount_max = $amountThisYear * 35 * 0.01;
       }
 
       //Bloque relativo a la nueva normativa para 2024 de personas jurídicas
       if ($donationsRecurrence == 1) {
         $deduction_amount_new = '50';
-        $deducted_amount_new = $amountThisYear * 50 * 0.01;
+        $deducted_amount_new_min = $deducted_amount_new_max = $amountThisYear * 50 * 0.01;
       }
       else {
         $deduction_amount_new = '40';
-        $deducted_amount_new = $amountThisYear * 40 * 0.01;
+        $deducted_amount_new_min = $deducted_amount_new_max = $amountThisYear * 40 * 0.01;
       }    
     // Fin bloque relativo a la nueva normativa para 2024 de personas jurídicas
     }
@@ -326,9 +326,9 @@ class AEAT182 {
       $constant_max = 100 / (100 - $new_deduction_max);
       $constant_min = 100 / (100 - $new_deduction_min);
      
-      // Si el importe no supera los 150€, no hay ningún cambio. En caso contrario, se aplica la nueva fórmula
+      // Si el importe no supera los 150€, solo se calcula la nueva contribución con la desgravación mínima, que se incrementa un 5% . En caso contrario, se aplica la nueva fórmula
       if ($amountThisYear <= 150) {
-        $contribution_new_max = 0;
+        $contribution_new_max = (($deducted_amount_new_min - $deducted_amount_min)*100)/(100-$new_deduction_min);
         $contribution_new_min = 0;
       }else{
         $old_partial_amount = $amountThisYear-150;
@@ -381,7 +381,7 @@ class AEAT182 {
     // Fin bloque cálculo de nueva contribución para 2024 para que el coste real sea el mismo que con la normativa anterior
     $actualAmount = $amountThisYear - $deducted_amount;
     $actualAmountNew = $amountThisYear - $deducted_amount_new;
-    return array( 'percentage' => $deduction_amount , 
+    return array( 'percentage' => $min_current_deduction, 
                   'recurrence' => $donationsRecurrence,   
                   'reduction_min' => strval(number_format($deducted_amount_min, 2, ',', ' ')) . ' €', 
                   'reduction_max' => strval(number_format($deducted_amount_max, 2, ',', ' ')) . ' €', 
