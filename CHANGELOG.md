@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 1.5.8 (2024-02-07)
+- Library via composer
+- PHPUnit tests
+- Add range intervals for imports for tax calculator
+
 ## 1.5.7 (2024-01-18)
 - getDeductionPercentAndDonationsRecurrence returns now '0€'... also by organizations
 - Add functions to get total amount and contributors on 182

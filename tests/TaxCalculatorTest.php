@@ -11,8 +11,6 @@ final class TaxCalculatorTest extends TestCase
 
     public static function taxCalculatorProvider(): array
     {
-        // @todo: Add complete testing set
-
         return [
             'persona física no recurrencia < 250 ' => [AEAT182::NATURAL_PERSON,100.00,100.00,200.00,"50005","35","35,00 €","80,00 €","20,00 €","65,00 €","40,00 €","80,00 €","20,00 €","60,00 €","8,33 €","8,33 €"],
             'persona física no recurrencia += 250 ' => [AEAT182::NATURAL_PERSON,500.00,100.00,0.00,"20830","35","175,00 €","242,50 €","257,50 €","325,00 €","200,00 €","300,00 €","200,00 €","300,00 €","41,67 €","95,83 €"],
@@ -51,7 +49,6 @@ final class TaxCalculatorTest extends TestCase
 
     public static function taxCalculatorCatalanReliefProvider(): array
     {
-
         return [        
             'persona física catalana no recurrencia  < 250' => [AEAT182::NATURAL_PERSON,60.00,60.00,0.00,"08035","50","30,00 €","57,00 €","3,00 €","30,00 €","33,00 €","57,00 €","3,00 €","27,00 €","6,67 €","6,67 €"],
             'persona física catalana no recurrencia >= 250' => [AEAT182::NATURAL_PERSON,1500.00,2300.00,2300.00,"08023","50","750,00 €","817,50 €","682,50 €","750,00 €","825,00 €","925,00 €","575,00 €","675,00 €","166,67 €","238,89 €"],
