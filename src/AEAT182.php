@@ -382,16 +382,16 @@ class AEAT182 {
     $actualAmountNew = floatval($amountThisYear) - $deducted_amount_new;
     return array( 'percentage' => strval($min_current_deduction), 
                   'recurrence' => $donationsRecurrence,   
-                  'reduction_min' => strval(number_format($deducted_amount_min, 2, ',', ' ')) . ' €', 
-                  'reduction_max' => strval(number_format($deducted_amount_max, 2, ',', ' ')) . ' €', 
-                  'actual_amount_min' => strval(number_format(floatval($amountThisYear) - $deducted_amount_max, 2, ',', ' ')) . ' €', //coste mínimo para el donante aplicando la desgravación máxima
-                  'actual_amount_max' => strval(number_format(floatval($amountThisYear) - $deducted_amount_min, 2, ',', ' ')) . ' €', //todo: coste máximo para el donante aplicando la desgravación mínima
-                  'reduction_new_min' => strval(number_format($deducted_amount_new_min, 2, ',', ' ')) . ' €', 
-                  'reduction_new_max' => strval(number_format($deducted_amount_new_max, 2, ',', ' ')) . ' €', 
-                  'actual_amount_min_new' => strval(number_format(floatval($amountThisYear) - $deducted_amount_new_max, 2, ',', ' ')) . ' €' , //coste mínimo para el donante aplicando la desgravación máxima
-                  'actual_amount_max_new' => strval(number_format(floatval($amountThisYear) - $deducted_amount_new_min, 2, ',', ' ')) . ' €' , //todo: coste máximo para el donante aplicando la desgravación mínima      
-                  'contribution_new_min' => strval(number_format($contribution_new_min, 2, ',', ' ')) . ' €',           
-                  'contribution_new_max' => strval(number_format($contribution_new_max, 2, ',', ' ')) . ' €'           
+                  'reduction_min' => strval(number_format($deducted_amount_min, 2, ',', '')) . ' €', 
+                  'reduction_max' => strval(number_format($deducted_amount_max, 2, ',', '')) . ' €', 
+                  'actual_amount_min' => strval(number_format(floatval($amountThisYear) - $deducted_amount_max, 2, ',', '')) . ' €', //coste mínimo para el donante aplicando la desgravación máxima
+                  'actual_amount_max' => strval(number_format(floatval($amountThisYear) - $deducted_amount_min, 2, ',', '')) . ' €', //todo: coste máximo para el donante aplicando la desgravación mínima
+                  'reduction_new_min' => strval(number_format($deducted_amount_new_min, 2, ',', '')) . ' €', 
+                  'reduction_new_max' => strval(number_format($deducted_amount_new_max, 2, ',', '')) . ' €', 
+                  'actual_amount_min_new' => strval(number_format(floatval($amountThisYear) - $deducted_amount_new_max, 2, ',', '')) . ' €' , //coste mínimo para el donante aplicando la desgravación máxima
+                  'actual_amount_max_new' => strval(number_format(floatval($amountThisYear) - $deducted_amount_new_min, 2, ',', '')) . ' €' , //todo: coste máximo para el donante aplicando la desgravación mínima      
+                  'contribution_new_min' => strval(number_format($contribution_new_min, 2, ',', '')) . ' €',           
+                  'contribution_new_max' => strval(number_format($contribution_new_max, 2, ',', '')) . ' €'           
                 );
   }
 
