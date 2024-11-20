@@ -202,10 +202,11 @@ class AEAT182 {
    * @param float $amountLastYear
    * @param float $amountTwoYearBefore
    * @param string $cp
+   * @param string $euro
    * 
    * @return array[percentage,recurrence,reduction,actual_amount_min,actual_amount_max,reduction_new,actual_amount_min_new,actual_amount_max_new,contribution_new_min,contribution_new_max]
    */
-  public function getDeductionPercentAndDonationsRecurrence($contactType, $amountThisYear, $amountLastYear, $amountTwoYearBefore, $cp) {
+  public function getDeductionPercentAndDonationsRecurrence($contactType, $amountThisYear, $amountLastYear, $amountTwoYearBefore, $cp, $euro = TRUE) {
 
     // Ley 49/2002, de 23 de diciembre, de régimen fiscal de las entidades sin fines lucrativos y de los incentivos fiscales al mecenazgo.
 
@@ -380,18 +381,26 @@ class AEAT182 {
     // Fin bloque cálculo de nueva contribución para 2024 para que el coste real sea el mismo que con la normativa anterior
     $actualAmount = floatval($amountThisYear) - $deducted_amount;
     $actualAmountNew = floatval($amountThisYear) - $deducted_amount_new;
+
+    if ($euro) {
+      $euroSufix = ' €';
+    }
+    else {
+      $euroSufix = '';
+    }
+
     return array( 'percentage' => strval($min_current_deduction), 
                   'recurrence' => $donationsRecurrence,   
-                  'reduction_min' => strval(number_format($deducted_amount_min, 2, ',', '')) . ' €', 
-                  'reduction_max' => strval(number_format($deducted_amount_max, 2, ',', '')) . ' €', 
-                  'actual_amount_min' => strval(number_format(floatval($amountThisYear) - $deducted_amount_max, 2, ',', '')) . ' €', //coste mínimo para el donante aplicando la desgravación máxima
-                  'actual_amount_max' => strval(number_format(floatval($amountThisYear) - $deducted_amount_min, 2, ',', '')) . ' €', //todo: coste máximo para el donante aplicando la desgravación mínima
-                  'reduction_new_min' => strval(number_format($deducted_amount_new_min, 2, ',', '')) . ' €', 
-                  'reduction_new_max' => strval(number_format($deducted_amount_new_max, 2, ',', '')) . ' €', 
-                  'actual_amount_min_new' => strval(number_format(floatval($amountThisYear) - $deducted_amount_new_max, 2, ',', '')) . ' €' , //coste mínimo para el donante aplicando la desgravación máxima
-                  'actual_amount_max_new' => strval(number_format(floatval($amountThisYear) - $deducted_amount_new_min, 2, ',', '')) . ' €' , //todo: coste máximo para el donante aplicando la desgravación mínima      
-                  'contribution_new_min' => strval(number_format($contribution_new_min, 2, ',', '')) . ' €',           
-                  'contribution_new_max' => strval(number_format($contribution_new_max, 2, ',', '')) . ' €'           
+                  'reduction_min' => strval(number_format($deducted_amount_min, 2, ',', '')) . $euroSufix, 
+                  'reduction_max' => strval(number_format($deducted_amount_max, 2, ',', '')) . $euroSufix, 
+                  'actual_amount_min' => strval(number_format(floatval($amountThisYear) - $deducted_amount_max, 2, ',', '')) . $euroSufix, //coste mínimo para el donante aplicando la desgravación máxima
+                  'actual_amount_max' => strval(number_format(floatval($amountThisYear) - $deducted_amount_min, 2, ',', '')) . $euroSufix, //todo: coste máximo para el donante aplicando la desgravación mínima
+                  'reduction_new_min' => strval(number_format($deducted_amount_new_min, 2, ',', '')) . $euroSufix, 
+                  'reduction_new_max' => strval(number_format($deducted_amount_new_max, 2, ',', '')) . $euroSufix, 
+                  'actual_amount_min_new' => strval(number_format(floatval($amountThisYear) - $deducted_amount_new_max, 2, ',', '')) . $euroSufix , //coste mínimo para el donante aplicando la desgravación máxima
+                  'actual_amount_max_new' => strval(number_format(floatval($amountThisYear) - $deducted_amount_new_min, 2, ',', '')) . $euroSufix , //todo: coste máximo para el donante aplicando la desgravación mínima      
+                  'contribution_new_min' => strval(number_format($contribution_new_min, 2, ',', '')) . $euroSufix,           
+                  'contribution_new_max' => strval(number_format($contribution_new_max, 2, ',', '')) . $euroSufix           
                 );
   }
 
