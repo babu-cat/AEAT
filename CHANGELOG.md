@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.6.0 (2024-12-20)
+
+- Remove code related to obsolete normative
+
 ## 1.5.10 (2024-11-20)
 
 - Possibility to remove euro sufix on getDeductionPercentAndDonationsRecurrence results

@@ -10,7 +10,7 @@
             "name": "Xavier de la Encarnación Gómez"
         }
     ],
-    "version": "1.5.10",
+    "version": "1.6.0",
     "license": "MIT",
     "autoload": {
         "psr-4": {
