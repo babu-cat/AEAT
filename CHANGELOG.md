@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.6.1 (2024-01-15)
+
+- Fix percentage calculation on getDeductionPercentAndDonationRecurrence
+
 ## 1.6.0 (2024-12-20)
 
 - Remove code related to obsolete normative

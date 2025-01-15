@@ -217,9 +217,9 @@ class AEAT182 {
     // Artículo 19. Deducción de la cuota del Impuesto sobre la Renta de las Personas Físicas.
     // Artículo 20. Deducción de la cuota del Impuesto sobre Sociedades.
 
-
     $deducted_amount_min = 0;
     $deducted_amount_max = 0;
+    $deduction_percentage = 0;
     $donationsRecurrence = 0;
 
     if ( ($amountLastYear > 0) &&
@@ -235,12 +235,19 @@ class AEAT182 {
       $min_current_deduction = $donationsRecurrence == 1 ? 45 : 40 ;
       $max_current_deduction = 80 ;
       if ($amountThisYear <= 250) {
+        $deduction_percentage = '80';
         $deducted_amount_max = floatval($amountThisYear) * $max_current_deduction * 0.01;
         $deducted_amount_min = floatval($amountThisYear) * $min_current_deduction * 0.01;
       }
       else {
         $deducted_amount_max = 200 + ( $amountThisYear - 250 ) * $min_current_deduction * 0.01; // 200 = 250 * 80 * 0.01
         $deducted_amount_min = $amountThisYear * $min_current_deduction * 0.01;
+        if ($donationsRecurrence = 1) {
+          $deduction_percentage = '45';
+        }
+        else {
+          $deduction_percentage = '40';
+        }
       }      
 
       //Si el declarante pertenece a una provincia catalana, se le añade la deducción del 15% del tramo autonómico
@@ -259,9 +266,11 @@ class AEAT182 {
 
       if ($donationsRecurrence == 1) {
         $deducted_amount_min = $deducted_amount_max = floatval($amountThisYear) * 50 * 0.01;
+        $deduction_percentage = '50';
       }
       else {
         $deducted_amount_min = $deducted_amount_max = floatval($amountThisYear) * 40 * 0.01;
+        $deduction_percentage = '40';
       }    
 
     }
@@ -276,7 +285,7 @@ class AEAT182 {
       $euroSufix = '';
     }
 
-    return array( 'percentage' => strval($min_current_deduction), 
+    return array( 'percentage' => strval($deduction_percentage), 
                   'recurrence' => $donationsRecurrence,   
                   'reduction_min' => strval(number_format($deducted_amount_min, 2, ',', '')) . $euroSufix, 
                   'reduction_max' => strval(number_format($deducted_amount_max, 2, ',', '')) . $euroSufix, 
