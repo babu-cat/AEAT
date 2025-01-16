@@ -242,7 +242,7 @@ class AEAT182 {
       else {
         $deducted_amount_max = 200 + ( $amountThisYear - 250 ) * $min_current_deduction * 0.01; // 200 = 250 * 80 * 0.01
         $deducted_amount_min = $amountThisYear * $min_current_deduction * 0.01;
-        if ($donationsRecurrence = 1) {
+        if ($donationsRecurrence == 1) {
           $deduction_percentage = '45';
         }
         else {

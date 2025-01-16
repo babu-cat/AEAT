@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 1.6.2 (2024-01-16)
+
+- Fix unit tests
+- Fix percenage calculation on getDeductionPercentAndDonationRecurrence for recurrent donors
+
 ## 1.6.1 (2024-01-15)
 
 - Fix percentage calculation on getDeductionPercentAndDonationRecurrence
